@@ -23,7 +23,7 @@ function ViewAllApplications() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/get-all-applications", { method: "POST", credentials: "include" })
+    fetch(`${process.env.REACT_APP_API}/get-all-applications`, { method: "POST", credentials: "include" })
       .then((res) => res.json())
       .then((body) => setStudents(body.request));
   }, []);
@@ -34,19 +34,23 @@ function ViewAllApplications() {
   };
 
   function showStudentRemark(submission) {
-    if (submission.step === 2 || submission.step === 3) { // won't show student remark when submission is at step 1 -- only github link is shown
-      return (<div>{`Student Remark: ${submission.student_remark}`}</div>);
+    if (submission.step === 2 || submission.step === 3) {
+      // won't show student remark when submission is at step 1 -- only github link is shown
+      return <div>{`Student Remark: ${submission.student_remark}`}</div>;
     }
   }
 
   function showGitHubLink(submission) {
-    if (submission.step === 2 || submission.step === 1) { // only github link is shown
-      return (<div>
-        {"Github Link: "}
-        <a href={submission.github_link} target="_blank" rel="noreferrer">
-          {submission.github_link}
-        </a>
-      </div>);
+    if (submission.step === 2 || submission.step === 1) {
+      // only github link is shown
+      return (
+        <div>
+          {"Github Link: "}
+          <a href={submission.github_link} target="_blank" rel="noreferrer">
+            {submission.github_link}
+          </a>
+        </div>
+      );
     }
   }
 

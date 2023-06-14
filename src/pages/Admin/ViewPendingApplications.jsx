@@ -24,7 +24,7 @@ function ViewPendingApplications() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/get-pending-applications", { method: "GET", credentials: "include" })
+    fetch(`${process.env.REACT_APP_API}/get-pending-applications`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => {
         setStudentsList(body.request);
@@ -51,13 +51,13 @@ function ViewPendingApplications() {
   }, [sortBy]);
 
   const handleReject = async (studentId) => {
-    await fetch("http://localhost:3001/reject-student-account", {
+    await fetch(`${process.env.REACT_APP_API}/reject-student-account`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ studentId: studentId }),
     });
-    await fetch("http://localhost:3001/get-pending-applications", { method: "GET", credentials: "include" })
+    await fetch(`${process.env.REACT_APP_API}/get-pending-applications`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => setStudentsList(body.request));
   };
@@ -65,7 +65,7 @@ function ViewPendingApplications() {
   const preApprove = async (student) => {
     setApproving(student);
     setShowApproveModal(true);
-    await fetch("http://localhost:3001/get-all-advisers", { method: "GET", credentials: "include" })
+    await fetch(`${process.env.REACT_APP_API}/get-all-advisers`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => {
         setApproversList(body.result);
@@ -74,7 +74,7 @@ function ViewPendingApplications() {
   };
 
   const handleApprove = async () => {
-    await fetch("http://localhost:3001/approve-student-account", {
+    await fetch(`${process.env.REACT_APP_API}/approve-student-account`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -82,7 +82,7 @@ function ViewPendingApplications() {
     });
     setShowApproveModal(false);
     setApproving(null);
-    await fetch("http://localhost:3001/get-pending-applications", { method: "GET", credentials: "include" })
+    await fetch(`${process.env.REACT_APP_API} /get-pending-applications`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => setStudentsList(body.request));
   };
