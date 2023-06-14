@@ -154,12 +154,12 @@ export default function Home() {
         if (body.success) {
           setIsLoggedIn("admin");
           // successful log in. store the token as a cookie
-          const cookies = new Cookies();
-          cookies.set("authToken", body.token, {
-            path: process.env.REACT_APP_API,
-            age: 60 * 60,
-            sameSite: false,
-          });
+          // const cookies = new Cookies();
+          // cookies.set("authToken", body.token, {
+          //   path: process.env.REACT_APP_API,
+          //   age: 60 * 60,
+          //   sameSite: false,
+          // });
 
           localStorage.setItem("username", body.username);
         } else {
