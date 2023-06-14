@@ -156,7 +156,7 @@ export default function Home() {
           // successful log in. store the token as a cookie
           const cookies = new Cookies();
           cookies.set("authToken", body.token, {
-            path: process.env.REACT_APP_LINK,
+            path: process.env.REACT_APP_API,
             age: 60 * 60,
             sameSite: false,
           });
