@@ -26,13 +26,10 @@ import ViewAllApplications from "./pages/Admin/ViewAllApplications";
 // localStorage.setItem("userType", userType);
 
 // Send a POST request to API to check if the user is logged in. Redirect the user to /student if already logged in
-const checkIfLoggedIn = route =>
-  fetch("http://localhost:3001/checkifloggedin", {
-    method: "POST",
-    credentials: "include",
-  })
-    .then(res => res.json())
-    .then(payload => {
+const checkIfLoggedIn = (route) =>
+  fetch(`${process.env.REACT_APP_API}/checkifloggedin`, { method: "POST", credentials: "include" })
+    .then((res) => res.json())
+    .then((payload) => {
       if (payload.isLoggedIn === "student" && route !== "student") {
         localStorage.setItem("userType", "student");
         return redirect("/student");
@@ -46,31 +43,6 @@ const checkIfLoggedIn = route =>
         return 0;
       }
     });
-
-// // Send a POST request to API to check if the user is logged in. Redirect the user back to / if not logged in
-
-// const checkIfLoggedInOnDashApprover = async () => {
-//   const res = await fetch("http://localhost:3001/checkifloggedinapprover", {
-//     method: "POST",
-//     credentials: "include",
-//   });
-
-//   const payload = await res.json();
-//   if (payload.isLoggedIn) {
-//     localStorage.setItem("userType", "approver");
-//     return true;
-//   } else {
-//     return redirect("/");
-//   }
-// };
-
-// const runAdmin = () => {
-//   if (userType === "admin") {
-//     return true;
-//   } else {
-//     return redirect("/");
-//   }
-// };
 
 const router = createBrowserRouter([
   { path: "/", element: <Home />, loader: () => checkIfLoggedIn("/") },
@@ -112,8 +84,4 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  // <React.StrictMode>
-  <RouterProvider router={router} />
-  // </React.StrictMode>
-);
+root.render(<RouterProvider router={router} />);

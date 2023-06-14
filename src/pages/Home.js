@@ -37,23 +37,17 @@ export default function Home() {
 
     if (!emailRegex.test(email)) {
       // Display an error message or perform any desired actions
-      alert(
-        "ERROR: Invalid Email Address! Make sure it is a UP Mail: @up.edu.ph"
-      );
+      alert("ERROR: Invalid Email Address! Make sure it is a UP Mail: @up.edu.ph");
       return false; // Prevent form submission
     } else if (!snoRegex.test(sno)) {
       // Display an error message or perform any desired actions
-      alert(
-        "ERROR: Invalid Student Number Format. Please enter in the format: ____-_____"
-      );
+      alert("ERROR: Invalid Student Number Format. Please enter in the format: ____-_____");
       return false; // Prevent form submission
     }
     // form validation goes here
-    fetch("http://localhost:3001/signup-student", {
+    fetch(`${process.env.REACT_APP_API}/signup-student`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         first_name: document.getElementById("s-fname").value,
         middle_name: document.getElementById("s-mname").value,
@@ -69,9 +63,7 @@ export default function Home() {
           alert("SUCCESS: You have successfully signed up!");
           clearSignUpFields();
         } else {
-          alert(
-            "ERROR: Failed to sign up. The account may already exist. You may also have entered invalid account details."
-          );
+          alert("ERROR: Failed to sign up. The account may already exist. You may also have entered invalid account details.");
           clearSignUpFields();
         }
       });
@@ -82,11 +74,9 @@ export default function Home() {
 
     // form validation goes here
 
-    fetch("http://localhost:3001/login-student", {
+    fetch(`${process.env.REACT_APP_API}/login-student`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: document.getElementById("ls-email").value,
         password: document.getElementById("ls-password").value,
@@ -100,16 +90,14 @@ export default function Home() {
           // successful log in. store the token as a cookie
           const cookies = new Cookies();
           cookies.set("authToken", body.token, {
-            path: "localhost:3001/",
+            path: `${process.env.REACT_APP_LINK}`,
             age: 60 * 60,
             sameSite: false,
           });
 
           localStorage.setItem("username", body.username);
         } else {
-          alert(
-            "Failed to Log In. Admin must approve your account first or you may have entered the wrong credentials."
-          );
+          alert("Failed to Log In. Admin must approve your account first or you may have entered the wrong credentials.");
           document.getElementById("ls-email").value = "";
           document.getElementById("ls-password").value = "";
         }
@@ -121,11 +109,9 @@ export default function Home() {
 
     // form validation goes here
 
-    fetch("http://localhost:3001/login-approver", {
+    fetch(`${process.env.REACT_APP_API}/login-approver`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: document.getElementById("la-email").value,
         password: document.getElementById("la-password").value,
@@ -138,16 +124,14 @@ export default function Home() {
           // successful log in. store the token as a cookie
           const cookies = new Cookies();
           cookies.set("authToken", body.token, {
-            path: "localhost:3001/",
+            path: process.env.REACT_APP_LINK,
             age: 60 * 60,
             sameSite: false,
           });
 
           localStorage.setItem("username", body.username);
         } else {
-          alert(
-            "Log In for Adviser Failed. You may have entered the wrong credentials."
-          );
+          alert("Log In for Adviser Failed. You may have entered the wrong credentials.");
           document.getElementById("la-email").value = "";
           document.getElementById("la-password").value = "";
         }
@@ -157,11 +141,9 @@ export default function Home() {
   const logInAdmin = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:3001/login-admin", {
+    fetch(`${process.env.REACT_APP_API}/login-admin`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: document.getElementById("lad-email").value,
         password: document.getElementById("lad-password").value,
@@ -174,7 +156,7 @@ export default function Home() {
           // successful log in. store the token as a cookie
           const cookies = new Cookies();
           cookies.set("authToken", body.token, {
-            path: "localhost:3001/",
+            path: process.env.REACT_APP_LINK,
             age: 60 * 60,
             sameSite: false,
           });
@@ -192,11 +174,7 @@ export default function Home() {
     <>
       <div id="header-container">
         <div id="glass-background">
-          <img
-            id="image"
-            src="https://i.pinimg.com/originals/38/4c/20/384c20132bda8dba92a55ddcebf29038.jpg"
-            alt="home"
-          ></img>
+          <img id="image" src="https://i.pinimg.com/originals/38/4c/20/384c20132bda8dba92a55ddcebf29038.jpg" alt="home"></img>
           <header id="header">Welcome To ClearMe</header>
         </div>
       </div>
@@ -208,53 +186,23 @@ export default function Home() {
         <input id="s-fname" placeholder="First Name" required />
         <input id="s-mname" placeholder="Middle Name" required />
         <input id="s-lname" placeholder="Last Name" required />
-        <input
-          id="s-sno"
-          pattern="\d{4}-\d{5}"
-          placeholder="Student Number"
-          required
-        />
+        <input id="s-sno" pattern="\d{4}-\d{5}" placeholder="Student Number" required />
         <input type="email" id="s-email" placeholder="UP Mail" required />
-        <input
-          id="s-password"
-          type="password"
-          placeholder="Password"
-          required
-        />
+        <input id="s-password" type="password" placeholder="Password" required />
         <button onClick={signUp}>Sign Up</button>
       </form>
       <br />
       <h1>Log In for Students</h1>
       <form id="log-in-student">
-        <input
-          type="email"
-          id="ls-email"
-          placeholder="Student Email"
-          required
-        />
-        <input
-          id="ls-password"
-          type="password"
-          placeholder="Student Password"
-          required
-        />
+        <input type="email" id="ls-email" placeholder="Student Email" required />
+        <input id="ls-password" type="password" placeholder="Student Password" required />
         <button onClick={logInStudent}>Log In</button>
       </form>
       <br />
       <h1>Log In for Advisers</h1>
       <form id="log-in-approver">
-        <input
-          type="email"
-          id="la-email"
-          placeholder="Adviser Email"
-          required
-        />
-        <input
-          id="la-password"
-          type="password"
-          placeholder="Adviser Password"
-          required
-        />
+        <input type="email" id="la-email" placeholder="Adviser Email" required />
+        <input id="la-password" type="password" placeholder="Adviser Password" required />
         <button onClick={logInApprover}>Log In</button>
       </form>
       <br />
@@ -265,17 +213,12 @@ export default function Home() {
         <button onClick={logInAdmin}>Log In</button>
       </form>
 
-      <p className="note">
-        Note: Coordinate with the Admin to create an Adviser account.
-      </p>
+      <p className="note">Note: Coordinate with the Admin to create an Adviser account.</p>
       <br />
       <br />
       <br />
       <footer>
-        <p>
-          Unlock the Path to Success with Effortless Efficiency: Experience
-          Seamless Clearance Approval in the Institute of Computer Science.
-        </p>
+        <p>Unlock the Path to Success with Effortless Efficiency: Experience Seamless Clearance Approval in the Institute of Computer Science.</p>
       </footer>
     </>
   );
