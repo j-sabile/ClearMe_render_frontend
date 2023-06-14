@@ -143,6 +143,7 @@ export default function Home() {
 
     fetch(`${process.env.REACT_APP_API}/login-admin`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: document.getElementById("lad-email").value,
@@ -168,6 +169,12 @@ export default function Home() {
           document.getElementById("lad-password").value = "";
         }
       });
+  };
+
+  const handleCreateJWT = async () => {
+    fetch(`https://tokentest-api.onrender.com/create-jwt`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ myBody: "Hello" }) })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
   };
 
   return (
@@ -212,6 +219,7 @@ export default function Home() {
         <input id="lad-password" type="password" placeholder="Admin Password" />
         <button onClick={logInAdmin}>Log In</button>
       </form>
+      <button onClick={handleCreateJWT}>Create JWT</button>
 
       <p className="note">Note: Coordinate with the Admin to create an Adviser account.</p>
       <br />

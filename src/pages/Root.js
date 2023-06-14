@@ -15,14 +15,9 @@ export default function Root() {
 
   useEffect(() => {
     if (userType === "student") {
-      fetch("http://localhost:3001/view-student-info", {
-        method: "POST",
-        credentials: "include",
-      })
-        .then(response => response.json())
-        .then(body => {
-          setOpenApplication(body.open_application);
-        });
+      fetch("http://localhost:3001/view-student-info", { method: "POST", credentials: "include" })
+        .then((response) => response.json())
+        .then((body) => setOpenApplication(body.open_application));
     }
   }, [location.pathname, userType]);
 
