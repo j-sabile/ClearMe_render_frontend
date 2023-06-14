@@ -17,8 +17,7 @@ function ManageApprovers() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [addApproverInfo, setAddApproverInfo] = useState(initialApproverState);
-  const [editApproverInfo, setEditApproverInfo] =
-    useState(initialApproverState);
+  const [editApproverInfo, setEditApproverInfo] = useState(initialApproverState);
   const [editApproverId, setEditApproverId] = useState(null);
   const modalStyle = {
     content: {
@@ -35,10 +34,7 @@ function ManageApprovers() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/get-all-advisers", {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(`${process.env.REACT_APP_API}/get-all-advisers`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => setApproversList(body.result));
   }, []);
@@ -46,14 +42,10 @@ function ManageApprovers() {
   useEffect(() => {
     switch (sortBy) {
       case "name_asc":
-        setApproversList((prevList) =>
-          [...prevList].sort((a, b) => a.first_name.localeCompare(b.first_name))
-        );
+        setApproversList((prevList) => [...prevList].sort((a, b) => a.first_name.localeCompare(b.first_name)));
         break;
       case "name_desc":
-        setApproversList((prevList) =>
-          [...prevList].sort((a, b) => b.first_name.localeCompare(a.first_name))
-        );
+        setApproversList((prevList) => [...prevList].sort((a, b) => b.first_name.localeCompare(a.first_name)));
         break;
       default:
         break;
@@ -61,13 +53,13 @@ function ManageApprovers() {
   }, [sortBy]);
 
   const handleDeleteApprover = async (approverId) => {
-    await fetch("http://localhost:3001/delete-approver", {
+    await fetch(`${process.env.REACT_APP_API}/delete-approver`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ approverId: approverId }),
     });
-    await fetch("http://localhost:3001/get-all-advisers", {
+    await fetch(`${process.env.REACT_APP_API}/get-all-advisers`, {
       method: "GET",
       credentials: "include",
     })
@@ -77,7 +69,7 @@ function ManageApprovers() {
 
   const handleEditApprover = async () => {
     if (editApproverId) {
-      await fetch("http://localhost:3001/edit-approver", {
+      await fetch(`${process.env.REACT_APP_API}/edit-approver`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -91,10 +83,7 @@ function ManageApprovers() {
       setEditApproverId(null);
       setShowEditModal(false);
       setEditApproverInfo(initialApproverState);
-      await fetch("http://localhost:3001/get-all-advisers", {
-        method: "GET",
-        credentials: "include",
-      })
+      await fetch(`${process.env.REACT_APP_API}/get-all-advisers`, { method: "GET", credentials: "include" })
         .then((response) => response.json())
         .then((body) => {
           setApproversList(body.result);
@@ -103,7 +92,7 @@ function ManageApprovers() {
   };
 
   const handleAddApprover = async () => {
-    await fetch("http://localhost:3001/add-approver", {
+    await fetch(`${process.env.REACT_APP_API}/add-approver`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -113,10 +102,7 @@ function ManageApprovers() {
       .then((body) => body.success && setAddApproverInfo(initialApproverState));
     setShowAddModal(false);
     setAddApproverInfo(initialApproverState);
-    await fetch("http://localhost:3001/get-all-advisers", {
-      method: "GET",
-      credentials: "include",
-    })
+    await fetch(`${process.env.REACT_APP_API}/get-all-advisers`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => {
         setApproversList(body.result);
@@ -145,23 +131,12 @@ function ManageApprovers() {
         <h3 className="my-4">Advisers</h3>
         <div className="d-flex flex-row justify-content-between">
           <div className="d-flex flex-row gap-1 align-items-center justify-content-start">
-            <input
-              className="glass-effect-1 m-0 px-4"
-              placeholder="Name"
-              onChange={(e) => setNameFilter(e.target.value)}
-              value={nameFilter}
-            />
+            <input className="glass-effect-1 m-0 px-4" placeholder="Name" onChange={(e) => setNameFilter(e.target.value)} value={nameFilter} />
             <button className="glass-effect-1 m-0 px-3 me-3">Search</button>
-            <button
-              className="glass-effect-2 m-0 px-3"
-              onClick={() => setSortBy("name_asc")}
-            >
+            <button className="glass-effect-2 m-0 px-3" onClick={() => setSortBy("name_asc")}>
               ↑
             </button>
-            <button
-              className="glass-effect-2 m-0 px-3"
-              onClick={() => setSortBy("name_desc")}
-            >
+            <button className="glass-effect-2 m-0 px-3" onClick={() => setSortBy("name_desc")}>
               ↓
             </button>
           </div>
@@ -173,34 +148,15 @@ function ManageApprovers() {
         {/* <table>
           <tbody> */}
         {approversList
-          .filter((e) =>
-            (e.first_name + " " + e.middle_name + " " + e.last_name)
-              .toLowerCase()
-              .includes(nameFilter.toLowerCase())
-          )
+          .filter((e) => (e.first_name + " " + e.middle_name + " " + e.last_name).toLowerCase().includes(nameFilter.toLowerCase()))
           .map((approver, index) => (
-            <div
-              className="card glass-effect-4 p-2 py-sm-3 px-sm-5 m-1 d-flex flex-row justify-content-between align-items-center"
-              key={index}
-            >
-              <div className="fw-semibold">
-                {approver.first_name +
-                  " " +
-                  approver.middle_name +
-                  " " +
-                  approver.last_name}
-              </div>
+            <div className="card glass-effect-4 p-2 py-sm-3 px-sm-5 m-1 d-flex flex-row justify-content-between align-items-center" key={index}>
+              <div className="fw-semibold">{approver.first_name + " " + approver.middle_name + " " + approver.last_name}</div>
               <div className="d-flex flex-row gap-3">
-                <button
-                  className="glass-effect-4 px-4"
-                  onClick={() => handlePreEdit(approver)}
-                >
+                <button className="glass-effect-4 px-4" onClick={() => handlePreEdit(approver)}>
                   Edit
                 </button>
-                <button
-                  className="glass-effect-4 px-4"
-                  onClick={() => handleDeleteApprover(approver._id)}
-                >
+                <button className="glass-effect-4 px-4" onClick={() => handleDeleteApprover(approver._id)}>
                   Delete
                 </button>
               </div>
@@ -211,11 +167,7 @@ function ManageApprovers() {
       {/* Editing an approver */}
       <ReactModal isOpen={showEditModal} style={modalStyle}>
         <div className="d-flex flex-column gap  -1 p-0 py-sm-3 px-sm-4 w-100 h-100 justify-content-between">
-          <button
-            type="button"
-            className="btn-close btn-right"
-            onClick={() => setShowEditModal(false)}
-          />
+          <button type="button" className="btn-close btn-right" onClick={() => setShowEditModal(false)} />
           <h4 className="fw-semibold mb-4">Edit an Adviser</h4>
           <div className="d-flex align-items-center gap-3">
             <label>First Name: </label>
@@ -277,17 +229,9 @@ function ManageApprovers() {
           <button onClick={handleEditApprover}>Edit</button>
         </div>
       </ReactModal>
-      <ReactModal
-        isOpen={showAddModal}
-        style={modalStyle}
-        onAfterClose={() => {}}
-      >
+      <ReactModal isOpen={showAddModal} style={modalStyle} onAfterClose={() => {}}>
         <div className="d-flex flex-column gap-1 p-0 py-sm-3 px-sm-4 w-100 h-100 justify-content-between">
-          <button
-            type="button"
-            className="btn-close btn-right"
-            onClick={() => setShowAddModal(false)}
-          />
+          <button type="button" className="btn-close btn-right" onClick={() => setShowAddModal(false)} />
           <h4 className="fw-semibold mb-4">Add an Adviser</h4>
 
           <input
@@ -328,9 +272,7 @@ function ManageApprovers() {
             placeholder="Email"
             type="email"
             value={addApproverInfo.email}
-            onChange={(e) =>
-              setAddApproverInfo({ ...addApproverInfo, email: e.target.value })
-            }
+            onChange={(e) => setAddApproverInfo({ ...addApproverInfo, email: e.target.value })}
             required
           />
           <input

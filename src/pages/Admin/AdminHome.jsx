@@ -9,10 +9,7 @@ function AdminHome() {
       else {
         const formData = new FormData();
         formData.append("file", selectedFile);
-        fetch("http://localhost:3001/upload-csv-file", {
-          method: "POST",
-          body: formData,
-        })
+        fetch(`${process.env.REACT_APP_API}/upload-csv-file`, { method: "POST", body: formData })
           .then((res) => res.json())
           .then((body) => {
             if (body.success) alert("Successfully uploaded CSV file!");
@@ -26,26 +23,15 @@ function AdminHome() {
 
   return (
     <>
-      <div
-        id="welcome-admin"
-        className="container d-flex flex-column align-items-start"
-      >
+      <div id="welcome-admin" className="container d-flex flex-column align-items-start">
         <h3 className="my-4">{"Welcome Admin!"}</h3>
         <span>CSV File to Map Students with their Adviser: </span>
         <label className="custom-file-upload">
-          <input
-            type="file"
-            name="file"
-            onChange={(e) => setSelectedFile(e.target.files[0])}
-          />
+          <input type="file" name="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
           Click to Upload CSV
         </label>
         <button onClick={handleCSVUpload}>Submit</button>
-        <img
-          id="image"
-          src="https://i.pinimg.com/originals/1b/0f/b0/1b0fb0ed95b7ee77ac662af8adcc29e7.png"
-          alt="admin-home"
-        ></img>
+        <img id="image" src="https://i.pinimg.com/originals/1b/0f/b0/1b0fb0ed95b7ee77ac662af8adcc29e7.png" alt="admin-home"></img>
       </div>
     </>
   );
