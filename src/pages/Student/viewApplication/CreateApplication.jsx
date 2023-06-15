@@ -18,15 +18,12 @@ export default function CreateApplication() {
     })
       .then((response) => response.json()) // get the response
       .then((data) => {
-        console.log(data);
         if (data.success) {
           // if success is true
-          console.log("Successfully created application!");
           // redirect to home page
           window.location.href = "/student";
         } else {
           // success: false
-          console.log("Failed to create application.");
         }
       })
       .catch((error) => {

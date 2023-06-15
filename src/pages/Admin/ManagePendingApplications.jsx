@@ -37,14 +37,8 @@ function ManagePendingApplications() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({
-        applicationId: currentStudent.open_application._id,
-        remarks: remarks,
-        commenter: "admin",
-      }),
-    })
-      .then((res) => res.json())
-      .then((body) => console.log(body));
+      body: JSON.stringify({ applicationId: currentStudent.open_application._id, remarks: remarks, commenter: "admin" }),
+    });
     setIsRejectingOpen(false);
     await fetch(`${process.env.REACT_APP_API}/get-student-application-admin`, { method: "POST", credentials: "include" })
       .then((res) => res.json())

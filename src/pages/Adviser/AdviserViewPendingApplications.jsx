@@ -18,7 +18,6 @@ function AdviserViewPendingApplications() {
     fetch(`${process.env.REACT_APP_API}/get-students-with-pending-application`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => {
-        console.log(body);
         setStudents(body.students);
       });
   };
@@ -39,7 +38,6 @@ function AdviserViewPendingApplications() {
       await fetch(`${process.env.REACT_APP_API}/get-students-with-pending-application`, { method: "GET", credentials: "include" })
         .then((response) => response.json())
         .then((body) => {
-          console.log(body);
           setStudents(body.students);
         });
     }
@@ -76,10 +74,6 @@ function AdviserViewPendingApplications() {
         break;
     }
   }, [sortBy]);
-
-  useEffect(() => {
-    console.log(filterDate);
-  });
 
   function showStudents() {
     if (students.length > 0) {
@@ -123,7 +117,6 @@ function AdviserViewPendingApplications() {
               var formattedDate = submissionDate.toLocaleDateString("en-US", options);
               var dateParts = formattedDate.split("/");
               formattedDate = dateParts[2] + "-" + dateParts[0].padStart(2, "0") + "-" + dateParts[1].padStart(2, "0");
-              console.log(formattedDate);
               return filterDate === "" || formattedDate === filterDate;
             })
             .filter((e) => filterStep === "None" || e.open_application.student_submissions[e.open_application.student_submissions.length - 1].step.toString() === filterStep)

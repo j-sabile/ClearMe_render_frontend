@@ -33,9 +33,7 @@ var document = {
 
 pdf
   .create(document, options)
-  .then((res) => {
-    console.log(res);
-  })
+  .then((res) => {})
   .catch((error) => {
     console.error(error);
   });

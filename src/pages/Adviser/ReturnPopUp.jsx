@@ -11,9 +11,7 @@ function ReturnPopUp({ handleCloseModal2, applicationId }) {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ applicationId: applicationId, remarks: remarks }),
-    })
-      .then((res) => res.json())
-      .then((body) => console.log(body));
+    });
 
     // set empty field again
     document.getElementById("remark").value = "";

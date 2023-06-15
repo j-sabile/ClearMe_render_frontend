@@ -13,7 +13,6 @@ export default function Applications() {
         const applicationListResponse = await fetch(`${process.env.REACT_APP_API}/get-applications-of-student`, { method: "GET", credentials: "include" });
 
         const payload = await applicationListResponse.json();
-        console.log("DATA IS ", payload.data);
 
         if (payload && payload.data) {
           setApplicationList(payload.data);

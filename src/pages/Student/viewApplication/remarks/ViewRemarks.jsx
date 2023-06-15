@@ -12,7 +12,6 @@ function ViewRemarks({ handleCloseModal }) {
       await fetch(`${process.env.REACT_APP_API}/get-open-application`, { method: "GET", credentials: "include" })
         .then((response) => response.json())
         .then((body) => {
-          console.log(body.data);
           setApplication(body.data);
           setRemarks(body.data.remarks);
         });
@@ -21,7 +20,6 @@ function ViewRemarks({ handleCloseModal }) {
       await fetch(`${process.env.REACT_APP_API}/get-adviser-details`, { method: "GET", credentials: "include" })
         .then((response) => response.json())
         .then((body) => {
-          console.log(body.adviser);
           setAdviser(body.adviser);
         });
     };

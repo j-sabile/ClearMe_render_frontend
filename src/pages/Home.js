@@ -87,8 +87,6 @@ export default function Home() {
       .then((body) => {
         if (body.success) {
           setIsLoggedIn("student");
-          console.log("logged in");
-
           localStorage.setItem("username", body.username);
         } else {
           alert("Failed to Log In. Admin must approve your account first or you may have entered the wrong credentials.");

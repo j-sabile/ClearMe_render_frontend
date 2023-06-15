@@ -16,9 +16,7 @@ function AdminHome() {
             else alert("Error uploading CSV file!");
           });
       }
-    } catch (error) {
-      console.log("Error uploading file:", error);
-    }
+    } catch (error) {}
   };
 
   return (

@@ -191,10 +191,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ applicationId: applicationId }),
-    })
-      .then((res) => res.json())
-      .then((body) => console.log(body));
-
+    });
     handleCloseModal();
   };
 

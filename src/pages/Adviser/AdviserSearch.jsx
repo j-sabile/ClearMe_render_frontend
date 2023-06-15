@@ -13,15 +13,9 @@ export default function AdviserSearch() {
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    const e = async () => {
-      await fetch(`${process.env.REACT_APP_API}/search-students`, { method: "GET", credentials: "include" })
-        .then((response) => response.json())
-        .then((body) => {
-          console.log(body.result);
-          setStudentsList(body.result);
-        });
-    };
-    e();
+    fetch(`${process.env.REACT_APP_API}/search-students`, { method: "GET", credentials: "include" })
+      .then((response) => response.json())
+      .then((body) => setStudentsList(body.result));
   }, []);
 
   useEffect(() => {

@@ -54,7 +54,6 @@ export default function ViewApplication() {
         setStudent(body);
 
         const applicationId = body.open_application;
-        console.log("APPLICATION ID IS " + applicationId);
 
         const applicationResponse = await fetch(`${process.env.REACT_APP_API}/view-open-application-info`, {
           method: "POST",
@@ -64,7 +63,6 @@ export default function ViewApplication() {
         });
 
         const payload = await applicationResponse.json();
-        console.log("DATA IS ", payload);
 
         if (payload && payload.data) {
           setApplication(payload.data);
@@ -102,7 +100,6 @@ export default function ViewApplication() {
     })
       .then((response) => response.json()) // get the response
       .then((data) => {
-        console.log(data);
         if (data.success) {
           // if success is true
           alert("Successfully submitted returned application to clearance officer!");
@@ -145,7 +142,6 @@ export default function ViewApplication() {
     })
       .then((response) => response.json()) // get the response
       .then((data) => {
-        console.log(data);
         if (data.success) {
           // if success is true
           alert("Successfully submitted returned application to adviser!");

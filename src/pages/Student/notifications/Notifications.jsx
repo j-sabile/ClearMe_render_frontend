@@ -14,7 +14,6 @@ export default function Notifications() {
         const body = await response.json();
         const applicationId = body.open_application;
         setHasOpenApplication(applicationId);
-        console.log("APPLICATION ID IS " + applicationId);
 
         if (hasOpenApplication) {
           const applicationResponse = await fetch(`${process.env.REACT_APP_API}/view-open-application-info`, {
@@ -25,8 +24,6 @@ export default function Notifications() {
           });
 
           const payload = await applicationResponse.json();
-          console.log("DATA IS ", payload);
-
           if (payload && payload.data) {
             setApplication(payload.data);
             //alert("Successfully found application info!");
@@ -45,7 +42,6 @@ export default function Notifications() {
         })
           .then((response) => response.json())
           .then((body) => {
-            console.log("Cleared applications: ", body.data);
             setClearedApplications(body.data);
           });
       } catch (error) {
