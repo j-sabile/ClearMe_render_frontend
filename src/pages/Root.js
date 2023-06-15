@@ -1,6 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate, useLoaderData } from "react-router-dom";
 import { FaUserCircle, FaCheckSquare } from "react-icons/fa";
-import Cookies from "universal-cookie";
 import { useState, useEffect } from "react";
 
 export default function Root() {
@@ -15,7 +14,7 @@ export default function Root() {
 
   useEffect(() => {
     if (userType === "student") {
-      fetch("http://localhost:3001/view-student-info", { method: "POST", credentials: "include" })
+      fetch(`${process.env.REACT_APP_API}/view-student-info`, { method: "POST", credentials: "include" })
         .then((response) => response.json())
         .then((body) => setOpenApplication(body.open_application));
     }
@@ -28,12 +27,9 @@ export default function Root() {
   }, [isLoggedIn, navigate]);
 
   function logout() {
-    const cookies = new Cookies();
-    cookies.remove("authToken");
-    localStorage.removeItem("username");
-    localStorage.removeItem("userType");
-    setIsLoggedIn(false);
-    navigate("/");
+    fetch(`${process.env.REACT_APP_API}/logout`, { method: "POST", credentials: "include" })
+      .then((res) => res.json())
+      .then((res) => res.success && navigate("/"));
   }
   // root is clearme logo and the navbar:
   // if user different navbar

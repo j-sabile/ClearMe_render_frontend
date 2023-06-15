@@ -10,18 +10,12 @@ function AdviserViewPendingApplications() {
   };
   const handleCloseModal = async () => {
     setShowModal(-1);
-    await fetch("http://localhost:3001/get-students-with-pending-application", {
-      method: "GET",
-      credentials: "include",
-    })
+    await fetch(`${process.env.REACT_APP_API}/get-students-with-pending-application`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => {
         setStudents(body.students);
       });
-    fetch("http://localhost:3001/get-students-with-pending-application", {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(`${process.env.REACT_APP_API}/get-students-with-pending-application`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => {
         console.log(body);
@@ -42,10 +36,7 @@ function AdviserViewPendingApplications() {
 
   useEffect(() => {
     async function fetchData() {
-      await fetch(
-        "http://localhost:3001/get-students-with-pending-application",
-        { method: "GET", credentials: "include" }
-      )
+      await fetch(`${process.env.REACT_APP_API}/get-students-with-pending-application`, { method: "GET", credentials: "include" })
         .then((response) => response.json())
         .then((body) => {
           console.log(body);
@@ -58,24 +49,16 @@ function AdviserViewPendingApplications() {
   useEffect(() => {
     switch (sortBy) {
       case "name_asc":
-        setStudents((prevList) =>
-          [...prevList].sort((a, b) => a.first_name.localeCompare(b.first_name))
-        );
+        setStudents((prevList) => [...prevList].sort((a, b) => a.first_name.localeCompare(b.first_name)));
         break;
       case "name_desc":
-        setStudents((prevList) =>
-          [...prevList].sort((a, b) => b.first_name.localeCompare(a.first_name))
-        );
+        setStudents((prevList) => [...prevList].sort((a, b) => b.first_name.localeCompare(a.first_name)));
         break;
       case "date_asc":
         setStudents((prevList) =>
           [...prevList].sort((a, b) =>
-            a.open_application.student_submissions[
-              a.open_application.student_submissions.length - 1
-            ].date.localeCompare(
-              b.open_application.student_submissions[
-                b.open_application.student_submissions.length - 1
-              ].date
+            a.open_application.student_submissions[a.open_application.student_submissions.length - 1].date.localeCompare(
+              b.open_application.student_submissions[b.open_application.student_submissions.length - 1].date
             )
           )
         );
@@ -83,12 +66,8 @@ function AdviserViewPendingApplications() {
       case "date_desc":
         setStudents((prevList) =>
           [...prevList].sort((a, b) =>
-            b.open_application.student_submissions[
-              b.open_application.student_submissions.length - 1
-            ].date.localeCompare(
-              a.open_application.student_submissions[
-                a.open_application.student_submissions.length - 1
-              ].date
+            b.open_application.student_submissions[b.open_application.student_submissions.length - 1].date.localeCompare(
+              a.open_application.student_submissions[a.open_application.student_submissions.length - 1].date
             )
           )
         );
@@ -108,31 +87,11 @@ function AdviserViewPendingApplications() {
         <div className="container">
           <div className="d-flex flex-row align-items-center gap-2">
             <div>{"Search: "}</div>
-            <input
-              type="text"
-              placeholder="Student Number"
-              value={studentNumber}
-              onChange={(e) => setStudentNumber(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Student Name"
-              value={studentName}
-              onChange={(e) => setStudentName(e.target.value)}
-            />
-            <input
-              type="date"
-              placeholder="Date"
-              className="glass-effect-5"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
-            />
+            <input type="text" placeholder="Student Number" value={studentNumber} onChange={(e) => setStudentNumber(e.target.value)} />
+            <input type="text" placeholder="Student Name" value={studentName} onChange={(e) => setStudentName(e.target.value)} />
+            <input type="date" placeholder="Date" className="glass-effect-5" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
             <label>{"Step: "}</label>
-            <select
-              className="glass-effect-3"
-              value={filterStep}
-              onChange={(e) => setFilterStep(e.target.value)}
-            >
+            <select className="glass-effect-3" value={filterStep} onChange={(e) => setFilterStep(e.target.value)}>
               <option value="None">{"None"}</option>
               <option value="1">{"1"}</option>
               <option value="2">{"2"}</option>
@@ -158,69 +117,30 @@ function AdviserViewPendingApplications() {
           </div>
           {students
             .filter((e) => e.student_number.includes(studentNumber))
-            .filter((e) =>
-              (e.first_name + " " + e.middle_name + " " + e.last_name)
-                .toLocaleLowerCase()
-                .includes(studentName.toLocaleLowerCase())
-            )
+            .filter((e) => (e.first_name + " " + e.middle_name + " " + e.last_name).toLocaleLowerCase().includes(studentName.toLocaleLowerCase()))
             .filter((e) => {
-              var submissionDate = new Date(
-                e.open_application.student_submissions[
-                  e.open_application.student_submissions.length - 1
-                ].date
-              );
-              var formattedDate = submissionDate.toLocaleDateString(
-                "en-US",
-                options
-              );
+              var submissionDate = new Date(e.open_application.student_submissions[e.open_application.student_submissions.length - 1].date);
+              var formattedDate = submissionDate.toLocaleDateString("en-US", options);
               var dateParts = formattedDate.split("/");
-              formattedDate =
-                dateParts[2] +
-                "-" +
-                dateParts[0].padStart(2, "0") +
-                "-" +
-                dateParts[1].padStart(2, "0");
+              formattedDate = dateParts[2] + "-" + dateParts[0].padStart(2, "0") + "-" + dateParts[1].padStart(2, "0");
               console.log(formattedDate);
               return filterDate === "" || formattedDate === filterDate;
             })
-            .filter(
-              (e) =>
-                filterStep === "None" ||
-                e.open_application.student_submissions[
-                  e.open_application.student_submissions.length - 1
-                ].step.toString() === filterStep
-            )
+            .filter((e) => filterStep === "None" || e.open_application.student_submissions[e.open_application.student_submissions.length - 1].step.toString() === filterStep)
             .map((student, index) => (
-              <div
-                key={index}
-                className="card glass-effect-4 p-2 py-sm-3 px-sm-5 m-2 d-flex flex-row justify-content-between align-items-center"
-              >
+              <div key={index} className="card glass-effect-4 p-2 py-sm-3 px-sm-5 m-2 d-flex flex-row justify-content-between align-items-center">
                 {/* Student Name */}
                 <div className="flex-fill col-3">
                   {student.first_name} {student.last_name}
                 </div>
                 <div className="flex-fill col-3">{student.student_number}</div>
-                <div className="flex-fill col-3">
-                  {localStorage.getItem("username")}
-                </div>
-                <div className="flex-fill col-3">
-                  {
-                    student.open_application.student_submissions[
-                      student.open_application.student_submissions.length - 1
-                    ].step
-                  }
-                </div>
+                <div className="flex-fill col-3">{localStorage.getItem("username")}</div>
+                <div className="flex-fill col-3">{student.open_application.student_submissions[student.open_application.student_submissions.length - 1].step}</div>
 
                 {/* View Application Button */}
                 <div className="flex-fill col-2">
-                  <button
-                    className="glass-effect-3"
-                    onClick={() => handleOpenModal(index)}
-                  >
-                    <AiFillFolderOpen
-                      className="mr-2"
-                      style={{ marginRight: "8px" }}
-                    />
+                  <button className="glass-effect-3" onClick={() => handleOpenModal(index)}>
+                    <AiFillFolderOpen className="mr-2" style={{ marginRight: "8px" }} />
                     View Application
                   </button>
                 </div>
@@ -233,10 +153,7 @@ function AdviserViewPendingApplications() {
                   shouldCloseOnOverlayClick={false}
                   appElement={document.getElementById("root")} // Set the app element
                 >
-                  <SeeProfile
-                    handleCloseModal={handleCloseModal}
-                    student={student}
-                  />
+                  <SeeProfile handleCloseModal={handleCloseModal} student={student} />
                 </ReactModal>
               </div>
             ))}
