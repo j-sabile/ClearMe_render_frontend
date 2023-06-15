@@ -64,8 +64,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
 
   // get last submission of student
   const lastIndex = student.open_application.student_submissions.length - 1;
-  const latestSubmission =
-    student.open_application.student_submissions[lastIndex];
+  const latestSubmission = student.open_application.student_submissions[lastIndex];
 
   // get github link and student remark
   const github_link = latestSubmission["github_link"];
@@ -133,35 +132,24 @@ export default function SeeProfile({ handleCloseModal, student }) {
         </div>
       );
     } else {
-      return (<div>
-        {sortedRemarks.map((remark, index) => (
-          <Remark
-            key={index}
-            remark={remark.remarks}
-            step={remark.step}
-            date={remark.date.slice(0, 10)}
-            commenter={username}
-          />
-        ))}
-      </div>);
+      return (
+        <div>
+          {sortedRemarks.map((remark, index) => (
+            <Remark key={index} remark={remark.remarks} step={remark.step} date={remark.date.slice(0, 10)} commenter={username} />
+          ))}
+        </div>
+      );
     }
   }
   // remarks of adviser to student
   function viewRemarks(remarks) {
     return (
       <div className="whole-container">
-        <button
-          type="button"
-          className="btn-close btn-right"
-          aria-label="Close"
-          onClick={handleCloseRemark}
-        ></button>
+        <button type="button" className="btn-close btn-right" aria-label="Close" onClick={handleCloseRemark}></button>
 
         <h5>Returned Remarks</h5>
 
-        <div className="remark-container">
-          {viewRemarksIfElse(remarks)}
-        </div>
+        <div className="remark-container">{viewRemarksIfElse(remarks)}</div>
       </div>
     );
   }
@@ -179,12 +167,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
 
     return (
       <div className="whole-container">
-        <button
-          type="button"
-          className="btn-close btn-right"
-          aria-label="Close"
-          onClick={handleCloseSubmission}
-        ></button>
+        <button type="button" className="btn-close btn-right" aria-label="Close" onClick={handleCloseSubmission}></button>
 
         <h5>Student Submissions</h5>
 
@@ -192,15 +175,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
           <div>
             {sortedSubmissions.map((sub, index) => {
               const date = new Date(sub.date).toLocaleString("en-US", options);
-              return (
-                <Submission
-                  key={index}
-                  github_link={sub.github_link}
-                  student_remark={sub.student_remark}
-                  step={sub.step}
-                  date={date}
-                />
-              );
+              return <Submission key={index} github_link={sub.github_link} student_remark={sub.student_remark} step={sub.step} date={date} />;
             })}
           </div>
         </div>
@@ -211,7 +186,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
   const handleApprove = async (e) => {
     e.preventDefault();
     // If Approve, set application step to 3
-    await fetch("http://localhost:3001/approve-application-adviser", {
+    await fetch(`${process.env.REACT_APP_API}/approve-application-adviser`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -240,12 +215,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
 
   return (
     <>
-      <button
-        type="button"
-        className="btn-close btn-right"
-        aria-label="Close"
-        onClick={handleCloseModal}
-      ></button>
+      <button type="button" className="btn-close btn-right" aria-label="Close" onClick={handleCloseModal}></button>
 
       <div className="whole-container">
         <br></br>
@@ -271,8 +241,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}
-        >
+          }}>
           <button onClick={handleOpenRemark} style={{ marginRight: 12 }}>
             <BiCommentDetail className="mr-2" style={{ marginRight: "8px" }} />
             View Adviser Remarks
@@ -307,8 +276,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}
-        >
+          }}>
           <button onClick={handleApprove} style={{ marginRight: 12 }}>
             Approve
           </button>
@@ -324,10 +292,7 @@ export default function SeeProfile({ handleCloseModal, student }) {
         shouldCloseOnOverlayClick={false}
         appElement={document.getElementById("root")} // Set the app element
       >
-        <ReturnPopUp
-          handleCloseModal2={handleCloseModal2}
-          applicationId={applicationId}
-        />
+        <ReturnPopUp handleCloseModal2={handleCloseModal2} applicationId={applicationId} />
       </ReactModal>
     </>
   );
