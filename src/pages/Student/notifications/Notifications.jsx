@@ -38,12 +38,10 @@ export default function Notifications() {
 
         // get cleared applications
 
-        await fetch("http://localhost:3001/get-cleared-applications", {
+        await fetch(`${process.env.REACT_APP_API}/get-cleared-applications`, {
           method: "GET",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         })
           .then((response) => response.json())
           .then((body) => {
