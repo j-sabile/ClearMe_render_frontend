@@ -76,6 +76,7 @@ export default function Home() {
 
     fetch(`${process.env.REACT_APP_API}/login-student`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: document.getElementById("ls-email").value,
@@ -87,13 +88,6 @@ export default function Home() {
         if (body.success) {
           setIsLoggedIn("student");
           console.log("logged in");
-          // successful log in. store the token as a cookie
-          // const cookies = new Cookies();
-          // cookies.set("authToken", body.token, {
-          //   path: `${process.env.REACT_APP_LINK}`,
-          //   age: 60 * 60,
-          //   sameSite: false,
-          // });
 
           localStorage.setItem("username", body.username);
         } else {
@@ -111,6 +105,7 @@ export default function Home() {
 
     fetch(`${process.env.REACT_APP_API}/login-approver`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: document.getElementById("la-email").value,
@@ -154,14 +149,6 @@ export default function Home() {
       .then((body) => {
         if (body.success) {
           setIsLoggedIn("admin");
-          // successful log in. store the token as a cookie
-          // const cookies = new Cookies();
-          // cookies.set("authToken", body.token, {
-          //   path: process.env.REACT_APP_API,
-          //   age: 60 * 60,
-          //   sameSite: false,
-          // });
-
           localStorage.setItem("username", body.username);
         } else {
           alert("Log In for Admin Failed.");

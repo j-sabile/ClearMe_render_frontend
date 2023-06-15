@@ -82,7 +82,7 @@ function ViewPendingApplications() {
     });
     setShowApproveModal(false);
     setApproving(null);
-    await fetch(`${process.env.REACT_APP_API} /get-pending-applications`, { method: "GET", credentials: "include" })
+    await fetch(`${process.env.REACT_APP_API}/get-pending-applications`, { method: "GET", credentials: "include" })
       .then((response) => response.json())
       .then((body) => setStudentsList(body.request));
   };
