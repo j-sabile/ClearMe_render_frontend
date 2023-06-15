@@ -88,12 +88,12 @@ export default function Home() {
           setIsLoggedIn("student");
           console.log("logged in");
           // successful log in. store the token as a cookie
-          const cookies = new Cookies();
-          cookies.set("authToken", body.token, {
-            path: `${process.env.REACT_APP_LINK}`,
-            age: 60 * 60,
-            sameSite: false,
-          });
+          // const cookies = new Cookies();
+          // cookies.set("authToken", body.token, {
+          //   path: `${process.env.REACT_APP_LINK}`,
+          //   age: 60 * 60,
+          //   sameSite: false,
+          // });
 
           localStorage.setItem("username", body.username);
         } else {
@@ -171,12 +171,6 @@ export default function Home() {
       });
   };
 
-  const handleCreateJWT = async () => {
-    fetch(`https://tokentest-api.onrender.com/create-jwt`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ myBody: "Hello" }) })
-      .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
-
   return (
     <>
       <div id="header-container">
@@ -219,7 +213,6 @@ export default function Home() {
         <input id="lad-password" type="password" placeholder="Admin Password" />
         <button onClick={logInAdmin}>Log In</button>
       </form>
-      <button onClick={handleCreateJWT}>Create JWT</button>
 
       <p className="note">Note: Coordinate with the Admin to create an Adviser account.</p>
       <br />
